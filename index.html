@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>منصة التطوع الصحي | قطاع الصحة العامة</title>
+  <meta name="description" content="منصة رقمية لإدارة الفرص التطوعية الصحية وطلبات المتطوعين." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">✦</div>
+      <div>
+        <div class="brand-title">منصة التطوع الصحي</div>
+        <div class="brand-sub">قطاع الصحة العامة</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <button data-view="home" class="nav-btn active">الرئيسية</button>
+      <button data-view="campaigns" class="nav-btn">الفرص التطوعية</button>
+      <button data-view="my-applications" class="nav-btn auth-only">طلباتي</button>
+      <button data-view="profile" class="nav-btn auth-only">ملفي</button>
+      <button data-view="admin" class="nav-btn admin-only">لوحة التحكم</button>
+      <button id="authBtn" class="outline-btn">تسجيل الدخول</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="homeView" class="view active">
+      <div class="hero">
+        <div class="hero-content">
+          <span class="eyebrow">التطوع الصحي • أثرٌ يصنع الفرق</span>
+          <h1>ساهم بوقتك،<br><span>واصنع أثرًا صحيًا.</span></h1>
+          <p>منصة موحدة لاستعراض الفرص التطوعية الصحية، التقديم عليها، ومتابعة حالة طلباتك بكل سهولة.</p>
+          <div class="hero-actions">
+            <button class="primary-btn" data-view="campaigns">استعرض الفرص التطوعية ←</button>
+            <button class="ghost-btn" id="heroLoginBtn">سجّل كمتطوع</button>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-top">
+            <span>لوحة الأثر</span><span class="live-dot">● مباشر</span>
+          </div>
+          <div class="impact-number" id="homeCampaignCount">—</div>
+          <div class="impact-label">فرصة تطوعية متاحة</div>
+          <div class="mini-stats">
+            <div><b id="homeOpenCount">—</b><span>مفتوحة</span></div>
+            <div><b id="homeFilledCount">—</b><span>مقاعد محجوزة</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div><span class="eyebrow dark">الفرص الحالية</span><h2>فرص تطوعية مختارة</h2></div>
+        <button class="text-btn" data-view="campaigns">عرض الكل ←</button>
+      </div>
+      <div id="featuredCampaigns" class="campaign-grid"></div>
+
+      <section class="steps">
+        <div class="section-head center"><div><span class="eyebrow dark">كيف تبدأ؟</span><h2>ثلاث خطوات بسيطة</h2></div></div>
+        <div class="steps-grid">
+          <div class="step"><span>01</span><h3>أنشئ حسابك</h3><p>سجّل بياناتك الأساسية لتصبح متطوعًا.</p></div>
+          <div class="step"><span>02</span><h3>اختر الفرصة</h3><p>استعرض الحملات والتواريخ والمقاعد المتاحة.</p></div>
+          <div class="step"><span>03</span><h3>قدّم وتابع</h3><p>أرسل طلبك وتابع حالته من حسابك.</p></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="campaignsView" class="view">
+      <div class="page-title"><span class="eyebrow dark">الفرص التطوعية</span><h1>اختر فرصتك التطوعية</h1><p>استعرض الحملات المتاحة وقدّم على الفرصة المناسبة لك.</p></div>
+      <div class="filters">
+        <input id="searchInput" type="search" placeholder="ابحث باسم الحملة أو الموقع..." />
+        <select id="statusFilter"><option value="all">كل الحالات</option><option value="مفتوحة">مفتوحة</option><option value="مكتملة">مكتملة</option><option value="مغلقة">مغلقة</option></select>
+      </div>
+      <div id="allCampaigns" class="campaign-grid"></div>
+    </section>
+
+    <section id="myApplicationsView" class="view">
+      <div class="page-title"><span class="eyebrow dark">حسابي</span><h1>طلباتي التطوعية</h1><p>تابع حالة مشاركاتك وسجل فرصك السابقة.</p></div>
+      <div id="applicationsList" class="applications-list"></div>
+    </section>
+
+    <section id="profileView" class="view">
+      <div class="page-title"><span class="eyebrow dark">الملف الشخصي</span><h1>بيانات المتطوع</h1><p>يمكنك تحديث بياناتك الأساسية في أي وقت.</p></div>
+      <form id="profileForm" class="form-card">
+        <label>الاسم الكامل<input id="profileName" required /></label>
+        <label>المركز الصحي<input id="profileCenter" required /></label>
+        <button class="primary-btn" type="submit">حفظ التغييرات</button>
+      </form>
+    </section>
+
+    <section id="adminView" class="view">
+      <div class="page-title"><span class="eyebrow dark">إدارة المنصة</span><h1>لوحة تحكم المشرفة</h1><p>إدارة الحملات ومراجعة طلبات المتطوعين.</p></div>
+      <div class="admin-stats">
+        <div><span>الحملات</span><b id="adminCampaigns">—</b></div>
+        <div><span>طلبات التطوع</span><b id="adminApplications">—</b></div>
+        <div><span>المقبولون</span><b id="adminAccepted">—</b></div>
+      </div>
+      <div class="admin-actions">
+        <button class="primary-btn" id="newCampaignBtn">+ إضافة حملة</button>
+        <button class="outline-btn" id="refreshAdminBtn">تحديث البيانات</button>
+      </div>
+      <div class="admin-panel">
+        <h2>الحملات</h2>
+        <div id="adminCampaignList"></div>
+      </div>
+      <div class="admin-panel">
+        <h2>طلبات التطوع</h2>
+        <div id="adminApplicationList"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer><div>منصة التطوع الصحي</div><div>قطاع الصحة العامة • 2026</div></footer>
+
+  <div id="authModal" class="modal hidden">
+    <div class="modal-box">
+      <button class="close" data-close="authModal">×</button>
+      <div class="modal-head"><span class="eyebrow dark">حساب المتطوع</span><h2 id="authTitle">تسجيل الدخول</h2></div>
+      <form id="authForm">
+        <div id="signupFields" class="hidden">
+          <label>الاسم الكامل<input id="authName" /></label>
+          <label>المركز الصحي<input id="authCenter" /></label>
+        </div>
+        <label>البريد الإلكتروني<input id="authEmail" type="email" required /></label>
+        <label>كلمة المرور<input id="authPassword" type="password" minlength="6" required /></label>
+        <button class="primary-btn wide" type="submit" id="authSubmit">دخول</button>
+      </form>
+      <button class="link-btn" id="toggleAuthMode">ليس لديك حساب؟ إنشاء حساب</button>
+    </div>
+  </div>
+
+  <div id="campaignModal" class="modal hidden">
+    <div class="modal-box">
+      <button class="close" data-close="campaignModal">×</button>
+      <div class="modal-head"><span class="eyebrow dark">إدارة حملة</span><h2>إضافة فرصة تطوعية</h2></div>
+      <form id="campaignForm">
+        <label>اسم الحملة<input id="cTitle" required /></label>
+        <label>الوصف<textarea id="cDescription" required></textarea></label>
+        <div class="two"><label>التاريخ<input id="cDate" type="date" required /></label><label>المقاعد<input id="cSeats" type="number" min="1" required /></label></div>
+        <label>الموقع<input id="cLocation" required /></label>
+        <button class="primary-btn wide" type="submit">إنشاء الحملة</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="applyModal" class="modal hidden">
+    <div class="modal-box">
+      <button class="close" data-close="applyModal">×</button>
+      <div class="modal-head"><span class="eyebrow dark">التقديم</span><h2 id="applyTitle">التقديم على الفرصة</h2></div>
+      <form id="applyForm">
+        <input type="hidden" id="applyCampaignId" />
+        <label>الاسم الكامل<input id="applyName" required /></label>
+        <label>المركز الصحي<input id="applyCenter" required /></label>
+        <label>نوع التعويض<select id="applyCompensation"><option>ساعات تطوع</option><option>أيام تعويضية</option></select></label>
+        <label>ملاحظات (اختياري)<textarea id="applyNote"></textarea></label>
+        <button class="primary-btn wide" type="submit">إرسال طلب التطوع</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
