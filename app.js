@@ -49,16 +49,29 @@ async function loadProfile(){
 }
 
 async function loadCampaigns(){
-  const {data,error}=await db.from("campaigns").select("*");
-if(error){toast("خطأ: "+error.message);console.error(error);return}
-  campaigns=data||[];
-  renderCampaigns(campaigns.slice(0,3),"featuredCampaigns");
-  renderCampaigns(campaigns,"allCampaigns");
-  $("homeCampaignCount").textContent=campaigns.length;
-  $("homeOpenCount").textContent=campaigns.filter(c=>c.status==="مفتوحة").length;
-  $("homeFilledCount").textContent=campaigns.reduce((n,c)=>n+(c.filled||0),0);
-}
+  try{
+    const res=await fetch(window.SUPABASE_URL+"/rest/v1/campaigns",{
+      headers:{
+        "apikey":window.SUPABASE_PUBLISHABLE_KEY,
+        "Authorization":"Bearer "+window.SUPABASE_PUBLISHABLE_KEY
+      }
+    });
 
+    if(!res.ok) throw new Error("HTTP "+res.status);
+
+    campaigns=await res.json();
+
+    renderCampaigns(campaigns.slice(0,3),"featuredCampaigns");
+    renderCampaigns(campaigns,"allCampaigns");
+    $("homeCampaignCount").textContent=campaigns.length;
+    $("homeOpenCount").textContent=campaigns.filter(c=>c.status==="مفتوحة").length;
+    $("homeFilledCount").textContent=campaigns.reduce((n,c)=>n+(c.filled||0),0);
+
+  }catch(error){
+    toast("تعذر تحميل الحملات: "+error.message);
+    console.error(error);
+  }
+}
 function renderCampaigns(list,targetId){
   const target=$(targetId);
   if(!target)return;
