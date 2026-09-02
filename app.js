@@ -49,7 +49,7 @@ async function loadProfile(){
 }
 
 async function loadCampaigns(){
-  const {data,error}=await db.from("campaigns").select("*").order("event_date",{ascending:true});
+  const {data,error}=await db.from("campaigns").select("*");
   if(error){toast("تعذر تحميل الحملات");console.error(error);return}
   campaigns=data||[];
   renderCampaigns(campaigns.slice(0,3),"featuredCampaigns");
